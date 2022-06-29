@@ -1,26 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
-import persons from '../../data/persons.json';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { fetchAssignment } from '../assignments/assignmentSlice';
 
-const initialState = {
-  persons,
-  isLoading: false,
-  isError: false,
-};
-
-console.log(persons);
+const usersAdapter = createEntityAdapter();
 
 export const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    createUser(state, action) { },
-    updateUser(state, action) { },
-    deleteUser(state, action) { },
-  },
+  name: 'persons',
+  initialState: usersAdapter.getInitialState(),
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(fetchAssignment.fulfilled, (state, action) => {
+      usersAdapter.upsertMany(state, Object.values(action.payload.persons));
+    })
+  }
 });
 
-const { actions, reducer } = userSlice;
-
-export const { createUser, updateUser, deleteUser } = actions;
-
+const reducer = userSlice.reducer;
 export default reducer;
+
+export const {
+  selectById: selectUserById,
+  selectIds: selectUserIds,
+  selectEntities: selectUserEntities,
+  selectAll: selectAllUsers,
+  selectTotal: selectTotalUsers
+} = usersAdapter.getSelectors(state => state.users);

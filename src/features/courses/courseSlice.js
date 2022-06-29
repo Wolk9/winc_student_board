@@ -1,26 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
-import courses from '../../data/courses.json';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { fetchAssignment } from '../assignments/assignmentSlice';
 
-const initialState = {
-  courses,
-  isLoading: false,
-  isError: false,
-};
-
-console.log(courses);
+const coursesAdapter = createEntityAdapter();
 
 export const courseSlice = createSlice({
   name: 'course',
-  initialState,
-  reducers: {
-    createCourse(state, action) { },
-    updateCourse(state, action) { },
-    deleteCourse(state, action) { },
-  },
+  initialState: coursesAdapter.getInitialState(),
+  reducers: {},
+  extraReducers: {
+    [fetchAssignment.fulfilled]: (state, action) => {
+      coursesAdapter.upsertMany(state, Object.values(action.payload.courses));
+    }
+  }
 });
 
-const { actions, reducer } = courseSlice;
+const reducer = courseSlice.reducer;
 
-export const { createCourse, updateCourse, deleteCourse } = actions;
+export const {
+  selectById: selectCourseByID,
+  selectIds: selectCourseIds,
+  selectEntities: selectCourseEntities,
+  selectAll: selectAllCourses,
+  selectTotal: selectTotalCourses
+} = coursesAdapter.getSelectors(state => state.Courses);
 
 export default reducer;
