@@ -1,10 +1,10 @@
 import { createAsyncThunk, createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit';
-import dataAPI from "../../services/dataAPI";
+import { dataAPI } from "../../services/dataAPI";
 import { normalize } from 'normalizr';
 import { assignmentEntity } from '../../services/schemas';
 // import assignments from '../../data/assignments.json';
 
-console.log(dataAPI.assignments.list())
+console.log(dataAPI.assignments);
 
 const assignmentsAdapter = createEntityAdapter();
 

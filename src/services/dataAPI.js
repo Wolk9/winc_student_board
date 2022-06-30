@@ -1,41 +1,45 @@
+import {
+  createApi,
+  fetchBaseQuery
+} from "@reduxjs/toolkit/query/react";
+
 const API_URI = "http://localhost:3000";
 
-const dataAPI = {
-    assignments: {
-        async list() {
-            const result = await fetch(`${API_URI}/assignments`, { method: "GET" });
-            console.log(result);
-            return result.json();
-        },
-        async show(id) {
-            const result = await fetch(`${API_URI}/assignments/${id}`, { method: "GET" });
-            return result.json();
-        }
-    },
-    persons: {
-        async list() {
-            const result = await fetch(`${API_URI}/persons`, { method: "GET" });
-            console.log(result);
-            return result.json();
-        },
-        async show(id) {
-            const result = await fetch(`${API_URI}/persons/${id}`, { method: "GET" });
-            console.log(result)
-            return result.json();
-        }
-    },
-    courses: {
-        async list() {
-            const result = await fetch(`${API_URI}/courses`, { method: "GET" });
-            console.log(result);
-            return result.json();
-        },
-        async show(id) {
-            const result = await fetch(`${API_URI}/courses/${id}`, { method: "GET" });
-            console.log(result)
-            return result.json();
-        }
-    }
-};
+export const dataAPI = createApi({
+    reducerPath: "dataApi",
+    baseQuery: fetchBaseQuery({
+        baseUrl: API_URI,
+    }),
+    endpoints: (builder) => ({
+        assignments: builder.query({
+            query: () => "/assignments",
+        }),
+        addAssignment: builder.mutation({
+            query: (assignment) => ({
+                url: "/assignments",
+                method: "POST",
+                body: assignment,
+            })
+        }),
+        updateAssignment: builder.mutation({
+            query: ({ id, ...rest }) => ({
+                url: `/assignments/${id}`,
+                method: "PUT",
+                body: rest,
+            }),
+        }),
+        deleteAssignment: builder.mutation({
+            query: ({ id }) => ({
+                url: `/assignments/${id}`,
+                method: "DELETE",
+            }),
+        }),
+    }),
+});
 
-export default dataAPI;
+export const {
+    useAssignmentsQuery,
+    useAddAssignmentMutation,
+    useUpdateAssignmentMutation,
+    useDeleteAssignmentMutation,
+} = dataAPI;
