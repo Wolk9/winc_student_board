@@ -4,6 +4,7 @@ import { normalize } from 'normalizr';
 import { assignmentEntity } from '../../services/schemas';
 // import assignments from '../../data/assignments.json';
 
+console.log(dataAPI.assignments.list())
 
 const assignmentsAdapter = createEntityAdapter();
 
