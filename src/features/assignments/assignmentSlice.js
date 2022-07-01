@@ -1,17 +1,17 @@
 import { createAsyncThunk, createEntityAdapter, createSelector, createSlice } from '@reduxjs/toolkit';
-import { dataAPI } from "../../services/dataAPI";
+import { dataApi } from "../../services/dataApi";
 import { normalize } from 'normalizr';
 import { assignmentEntity } from '../../services/schemas';
 // import assignments from '../../data/assignments.json';
 
-console.log(dataAPI.assignments);
+console.log(dataApi);
 
 const assignmentsAdapter = createEntityAdapter();
 
 export const fetchAssignment = createAsyncThunk(
   "assignments/fetchAssignment",
   async id => {
-    const data = await dataAPI.assignments.show(id);
+    const data = await dataApi.assignments.show(id);
     const normalized = normalize(data, assignmentEntity);
     console.log(normalized);
     return normalized.entities;

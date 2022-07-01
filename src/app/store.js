@@ -1,14 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from '../features/users/userSlice';
-import courseReducer from '../features/courses/courseSlice';
-import assignmentReducer from '../features/assignments/assignmentSlice';
+import { dataApi } from '../services/dataApi';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    persons: userReducer,
-    courses: courseReducer,
-    assignments: assignmentReducer,
+   [dataApi.reducerPath]: dataApi.reducer
   },
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware().concat(dataApi.middleware)
 });
 
-export default store;

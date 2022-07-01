@@ -3,12 +3,11 @@ import {
   fetchBaseQuery
 } from "@reduxjs/toolkit/query/react";
 
-const API_URI = "http://localhost:3000";
 
-export const dataAPI = createApi({
+export const dataApi = createApi({
     reducerPath: "dataApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: API_URI,
+        baseUrl:"http://localhost:3000",
     }),
     endpoints: (builder) => ({
         assignments: builder.query({
@@ -42,4 +41,4 @@ export const {
     useAddAssignmentMutation,
     useUpdateAssignmentMutation,
     useDeleteAssignmentMutation,
-} = dataAPI;
+} = dataApi;
